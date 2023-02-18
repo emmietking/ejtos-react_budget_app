@@ -2,13 +2,26 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const AllocationForm = (props) => {
-    const { dispatch,remaining  } = useContext(AppContext);
+    const { dispatch, remaining, currency  } = useContext(AppContext);
 
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('');
 
     const submitEvent = () => {
+        const enteredValue = Number(cost);
+
+        // check if the entered value is a number
+        if (Number.isNaN(enteredValue)) {
+          alert('Please enter a valid number.');
+          return;
+        }
+    
+        // check if the entered value is an integer number
+        if (!Number.isInteger(enteredValue)) {
+          alert('Please enter an integer number.');
+          return;
+        }
 
             if(cost > remaining) {
                 alert("The value cannot exceed remaining funds  £"+remaining);
@@ -58,6 +71,12 @@ const AllocationForm = (props) => {
                         <option defaultValue value="Add" name="Add">Add</option>
                 <option value="Reduce" name="Reduce">Reduce</option>
                   </select>
+                  
+                  <div style={{display:"flex",alignItems:"center", justifyContent:"center"}}>
+                      <label htmlFor="cost" style={{ marginLeft: '2rem'}}>
+                          {currency}
+                      </label>
+                  </div>
 
                     <input
                         required='required'
